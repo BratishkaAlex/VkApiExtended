@@ -1,5 +1,6 @@
 from framework.utils.logger import info
 from framework.vk_api.enums.vk_attachments_types import VkAttachmentsTypes
+from framework.vk_api.enums.vk_items import VkItems
 from framework.vk_api.enums.vk_like_methods import VkLikeMethods
 from framework.vk_api.enums.vk_wall_methods import VkWallMethods
 from framework.vk_api.vk_upload_files_utils import save_file
@@ -7,7 +8,7 @@ from framework.vk_api.vk_upload_photo_utils import *
 from resources import vk_config
 
 
-def create_new_post(message, access_token):
+def create_new_post(message: str, access_token: str) -> int:
     parameters = {
         "access_token": access_token,
         "message": message,
@@ -16,13 +17,15 @@ def create_new_post(message, access_token):
     return int(VkApiRequest(VkWallMethods.POST, parameters).request_result["response"]["post_id"])
 
 
-def create_new_post_with_attachment(message, attachment_type: VkAttachmentsTypes, file, access_token):
+def create_new_post_with_attachment(message: str, attachment_type: VkAttachmentsTypes, file: str,
+                                    access_token: str) -> tuple:
     post_id = create_new_post(message, access_token)
     attachment_id = edit_post_and_attach_file(message, attachment_type, post_id, file, access_token)
     return post_id, attachment_id
 
 
-def edit_post_and_attach_file(message, attachment_type: VkAttachmentsTypes, post_id, file, access_token):
+def edit_post_and_attach_file(message: str, attachment_type: VkAttachmentsTypes, post_id: int, file: str,
+                              access_token: str) -> str:
     file_id = ""
     if attachment_type is VkAttachmentsTypes.PHOTO:
         file_id = upload_wall_photo(file, access_token)
@@ -39,7 +42,7 @@ def edit_post_and_attach_file(message, attachment_type: VkAttachmentsTypes, post
     return file_id
 
 
-def add_comment_to_post(message, post_id, access_token):
+def add_comment_to_post(message: str, post_id: int, access_token: str):
     parameters = {
         "access_token": access_token,
         "post_id": post_id,
@@ -49,7 +52,7 @@ def add_comment_to_post(message, post_id, access_token):
     VkApiRequest(VkWallMethods.CREATE_COMMENT, parameters)
 
 
-def is_item_liked_by_user(item_type, post_id, user_id, access_token):
+def is_item_liked_by_user(item_type: VkItems, post_id: int, user_id: int, access_token: str) -> bool:
     info(f"Checking that post was liked by user with id {user_id}")
     parameters = {
         "access_token": access_token,
@@ -61,7 +64,7 @@ def is_item_liked_by_user(item_type, post_id, user_id, access_token):
     return VkApiRequest(VkLikeMethods.IS_LIKED, parameters).request_result["response"]["liked"] == 1
 
 
-def delete_post(post_id, access_token):
+def delete_post(post_id: int, access_token: str):
     parameters = {
         "access_token": access_token,
         "post_id": post_id,

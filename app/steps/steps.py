@@ -16,7 +16,7 @@ header = Header()
 my_page = MyPage()
 
 
-def log_in(login, password):
+def log_in(login: str, password: str):
     info("Authorize")
     unauthorized_page.type_login(login)
     unauthorized_page.type_password(password)
@@ -29,10 +29,10 @@ def log_out():
             header.top_profile_link.click()
             header.logout_button.click()
     except NoSuchElementException:
-        error("NoSuchElementException")
+        error("User already logged out")
 
 
-def is_post_deleted(post_id):
+def is_post_deleted(post_id: int) -> bool:
     info("Checking that post was deleted")
     try:
         post_form.get_like_button(post_id).wait_for_element_disappearing()
@@ -41,23 +41,20 @@ def is_post_deleted(post_id):
         return False
 
 
-def is_post_edited_and_photo_uploaded(post_id, owner_id, message, uploaded_photo_id, path_to_picture,
-                                      path_to_download_picture):
-    info("Checking that post was edited and photo was uploaded")
+def is_photo_uploaded(uploaded_photo_id: str, path_to_picture: str, path_to_download_picture: str) -> bool:
+    info("Checking that photo was uploaded in post")
     download_picture(uploaded_photo_id, path_to_download_picture)
     return compare_two_images_with_accuracy(path_to_picture,
-                                            path_to_download_picture) and post_form.is_post_displayed(post_id, owner_id,
-                                                                                                      message)
+                                            path_to_download_picture)
 
 
-def is_post_edited_and_doc_uploaded(post_id, owner_id, message, path_to_file):
-    info("Checking that post was edited and doc was uploaded")
+def is_doc_uploaded(post_id: int, path_to_file: str) -> bool:
+    info("Checking that doc was uploaded to post")
     file_name = os.path.basename(path_to_file)
-    return post_form.is_post_displayed(post_id, owner_id, message) and post_form.is_doc_attached_to_post(post_id,
-                                                                                                         file_name)
+    return post_form.is_doc_attached_to_post(post_id, file_name)
 
 
-def download_picture(uploaded_photo_id, path_to_download):
+def download_picture(uploaded_photo_id: str, path_to_download: str):
     photo = post_form.get_uploaded_photo(uploaded_photo_id)
     download_file(photo.link_to_download, path_to_download)
 

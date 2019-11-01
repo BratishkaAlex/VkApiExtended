@@ -6,7 +6,7 @@ from framework.vk_api.models.vk_api_request import VkApiRequest
 from resources import vk_config
 
 
-def get_wall_upload_server_for_files(access_token):
+def get_wall_upload_server_for_files(access_token: str) -> str:
     parameters = {
         "access_token": access_token,
         "v": vk_config.API_VERSION
@@ -15,7 +15,7 @@ def get_wall_upload_server_for_files(access_token):
         "upload_url"]
 
 
-def get_uploaded_file_attribute(file, access_token):
+def get_uploaded_file_attribute(file: str, access_token: str) -> str:
     files = {
         "file": open(abspath(file), "rb")
     }
@@ -23,7 +23,7 @@ def get_uploaded_file_attribute(file, access_token):
     return request_result["file"]
 
 
-def save_file(file, access_token):
+def save_file(file: str, access_token: str) -> str:
     parameters = {
         "access_token": access_token,
         "v": vk_config.API_VERSION,

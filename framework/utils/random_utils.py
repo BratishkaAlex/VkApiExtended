@@ -3,7 +3,7 @@ import random
 characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_"
 
 
-def get_random_string():
+def get_random_string() -> str:
     random_string = ""
     for i in range(10):
         random_string += random.choice(characters)

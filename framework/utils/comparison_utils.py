@@ -4,13 +4,14 @@ from framework.utils.logger import info
 from resources import config
 
 
-def compare_two_images(path_to_first_picture, path_to_second_picture):
+def compare_two_images(path_to_first_picture: str, path_to_second_picture: str) -> bool:
     first_image = Image.open(path_to_first_picture)
     second_image = Image.open(path_to_second_picture)
     return ImageChops.difference(first_image, second_image).getbbox() is None
 
 
-def compare_two_images_with_accuracy(path_to_first_picture, path_to_second_picture):
+def compare_two_images_with_accuracy(path_to_first_picture: str, path_to_second_picture: str,
+                                     percent_of_accuracy: int = config.PERCENT_OF_ACCURACY) -> bool:
     info(f"Comparing two pictures, difference percentage must be no more than {config.PERCENT_OF_ACCURACY}")
     image_1 = Image.open(path_to_first_picture)
     image_2 = Image.open(path_to_second_picture)
@@ -26,4 +27,4 @@ def compare_two_images_with_accuracy(path_to_first_picture, path_to_second_pictu
 
     components = image_1.size[0] * image_1.size[1] * 3
     difference_percentage = (dif / 255.0 * 100) / components
-    return difference_percentage <= config.PERCENT_OF_ACCURACY
+    return difference_percentage <= percent_of_accuracy

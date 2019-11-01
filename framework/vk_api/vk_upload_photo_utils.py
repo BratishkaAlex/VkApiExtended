@@ -6,7 +6,7 @@ from framework.vk_api.models.vk_api_request import VkApiRequest
 from resources import vk_config
 
 
-def get_wall_upload_server_for_photos(access_token):
+def get_wall_upload_server_for_photos(access_token: str) -> str:
     parameters = {
         "access_token": access_token,
         "v": vk_config.API_VERSION
@@ -15,7 +15,7 @@ def get_wall_upload_server_for_photos(access_token):
         "upload_url"]
 
 
-def get_uploaded_photo_attributes(photo_name, access_token):
+def get_uploaded_photo_attributes(photo_name: str, access_token: str) -> tuple:
     files = {
         "photo": open(abspath(photo_name), "rb")
     }
@@ -23,7 +23,7 @@ def get_uploaded_photo_attributes(photo_name, access_token):
     return request_result["server"], request_result["photo"], request_result["hash"]
 
 
-def upload_wall_photo(photo_name, access_token):
+def upload_wall_photo(photo_name: str, access_token: str) -> str:
     server, photo, photo_hash = get_uploaded_photo_attributes(photo_name, access_token)
     parameters = {
         "access_token": access_token,

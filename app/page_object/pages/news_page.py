@@ -10,5 +10,5 @@ class NewsPage(BasePage):
         self.__side_bar = SideBar()
 
     @property
-    def side_bar(self):
+    def side_bar(self) -> SideBar:
         return self.__side_bar

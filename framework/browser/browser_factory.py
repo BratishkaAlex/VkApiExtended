@@ -5,7 +5,7 @@ from webdriver_manager.firefox import GeckoDriverManager
 from resources import config
 
 
-def get_driver():
+def get_driver() -> webdriver:
     if config.BROWSER == "chrome":
         return webdriver.Chrome(ChromeDriverManager().install(),
                                 options=get_browser_options(config.BROWSER))

@@ -6,8 +6,8 @@ from app.enums.side_bar_items import SideBarItems
 from app.page_object.pages.my_page import MyPage
 from app.page_object.pages.news_page import NewsPage
 from app.page_object.pages.unauthorized_page import UnauthorizedPage
-from app.steps.steps import log_in, log_out, is_post_edited_and_photo_uploaded, is_post_deleted, \
-    wait_while_entering_captcha, is_post_edited_and_doc_uploaded
+from app.steps.steps import log_in, log_out, is_post_deleted, wait_while_entering_captcha, is_doc_uploaded, \
+    is_photo_uploaded
 from framework.browser.browser import Browser
 from framework.utils.logger import Step
 from framework.utils.random_utils import get_random_string
@@ -64,9 +64,9 @@ class TestVkApi:
             uploaded_photo_id = edit_post_and_attach_file(edited_random_string, VkAttachmentsTypes.PHOTO, post_id,
                                                           config.PATH_TO_JPG_PICTURE,
                                                           vk_config.ACCESS_TOKEN_1)
-            assert is_post_edited_and_photo_uploaded(post_id, owner_id, edited_random_string,
-                                                     uploaded_photo_id, config.PATH_TO_JPG_PICTURE,
-                                                     config.PATH_TO_DOWNLOAD_JPG_PICTURE), "Post wasn't edited"
+            assert my_page.post_form.is_post_displayed(post_id, owner_id, edited_random_string) and is_photo_uploaded(
+                uploaded_photo_id, config.PATH_TO_JPG_PICTURE,
+                config.PATH_TO_DOWNLOAD_JPG_PICTURE), "Post wasn't edited"
 
         with Step("Adding random comment to the post"):
             random_comment = get_random_string()
@@ -188,8 +188,8 @@ class TestVkApi:
                                       vk_config.ACCESS_TOKEN_1)
 
         with Step("Check that post was edited"):
-            assert is_post_edited_and_doc_uploaded(post_id, owner_id, edited_message,
-                                                   config.PATH_TO_FILE), "Post wasn't edited"
+            assert my_page.post_form.is_post_displayed(post_id, owner_id, edited_message) \
+                   and is_doc_uploaded(post_id, config.PATH_TO_FILE), "Post wasn't edited"
 
         with Step("Adding random comment to the post"):
             random_comment = get_random_string()
@@ -232,6 +232,6 @@ class TestVkApi:
             post_id, uploaded_photo_id = create_new_post_with_attachment(random_string, VkAttachmentsTypes.PHOTO,
                                                                          path_to_picture,
                                                                          vk_config.ACCESS_TOKEN_2)
-            assert is_post_edited_and_photo_uploaded(post_id, owner_id, random_string,
-                                                     uploaded_photo_id, path_to_picture,
-                                                     path_to_downloaded_picture), "Post wasn't created"
+            assert my_page.post_form.is_post_displayed(post_id, owner_id, random_string) and is_photo_uploaded(
+                uploaded_photo_id, path_to_picture,
+                path_to_downloaded_picture), "Post wasn't created"

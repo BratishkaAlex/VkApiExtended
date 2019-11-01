@@ -9,10 +9,10 @@ class UnauthorizedPage(BasePage):
     def __init__(self):
         super().__init__(By.ID, "index_login")
 
-    def type_login(self, login):
+    def type_login(self, login: str):
         InputField(By.ID, "index_email", "Login").send_keys(login)
 
-    def type_password(self, password):
+    def type_password(self, password: str):
         InputField(By.ID, "index_pass", "Password").send_keys(password)
 
     def click_submit(self):

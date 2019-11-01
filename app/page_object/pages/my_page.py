@@ -14,17 +14,17 @@ class MyPage(BasePage):
         self.__header = Header()
 
     @property
-    def post_form(self):
+    def post_form(self) -> PostForm:
         return self.__post_form
 
     @property
-    def header(self):
+    def header(self) -> Header:
         return self.__header
 
     @property
-    def skip_validation_button(self):
+    def skip_validation_button(self) -> Button:
         return Button(By.ID, "validation_skip", "skip_phone_validation")
 
     @property
-    def captcha(self):
+    def captcha(self) -> Photo:
         return Photo(By.CSS_SELECTOR, ".captcha", "Captcha")
