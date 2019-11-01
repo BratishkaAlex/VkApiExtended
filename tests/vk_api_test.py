@@ -64,9 +64,9 @@ class TestVkApi:
             uploaded_photo_id = edit_post_and_attach_file(edited_random_string, VkAttachmentsTypes.PHOTO, post_id,
                                                           config.PATH_TO_JPG_PICTURE,
                                                           vk_config.ACCESS_TOKEN_1)
-            assert my_page.post_form.is_post_displayed(post_id, owner_id, edited_random_string) and is_photo_uploaded(
-                uploaded_photo_id, config.PATH_TO_JPG_PICTURE,
-                config.PATH_TO_DOWNLOAD_JPG_PICTURE), "Post wasn't edited"
+            assert my_page.post_form.is_post_displayed(post_id, owner_id, edited_random_string), "Post wasn't edited"
+            assert is_photo_uploaded(uploaded_photo_id, config.PATH_TO_JPG_PICTURE,
+                                     config.PATH_TO_DOWNLOAD_JPG_PICTURE), "Photo wasn't uploaded to post"
 
         with Step("Adding random comment to the post"):
             random_comment = get_random_string()
@@ -129,8 +129,9 @@ class TestVkApi:
 
         with Step("Check that post was liked by User_1 and User_2"):
             assert is_item_liked_by_user(VkItems.POST, post_id, first_user_id,
-                                         vk_config.ACCESS_TOKEN_1) and is_item_liked_by_user(
-                VkItems.POST, post_id, second_user_id, vk_config.ACCESS_TOKEN_1), "Post wasn't liked by Users"
+                                         vk_config.ACCESS_TOKEN_1), "Post wasn't liked by User_1"
+            assert is_item_liked_by_user(VkItems.POST, post_id, second_user_id,
+                                         vk_config.ACCESS_TOKEN_1), "Post wasn't liked by User_2"
 
     def test_vk_case_3(self):
         with Step("Authorize as User_1"):
@@ -188,8 +189,8 @@ class TestVkApi:
                                       vk_config.ACCESS_TOKEN_1)
 
         with Step("Check that post was edited"):
-            assert my_page.post_form.is_post_displayed(post_id, owner_id, edited_message) \
-                   and is_doc_uploaded(post_id, config.PATH_TO_FILE), "Post wasn't edited"
+            assert my_page.post_form.is_post_displayed(post_id, owner_id, edited_message), "Post wasn't edited"
+            assert is_doc_uploaded(post_id, config.PATH_TO_FILE), "File wasn't uploaded to post"
 
         with Step("Adding random comment to the post"):
             random_comment = get_random_string()
@@ -232,6 +233,6 @@ class TestVkApi:
             post_id, uploaded_photo_id = create_new_post_with_attachment(random_string, VkAttachmentsTypes.PHOTO,
                                                                          path_to_picture,
                                                                          vk_config.ACCESS_TOKEN_2)
-            assert my_page.post_form.is_post_displayed(post_id, owner_id, random_string) and is_photo_uploaded(
-                uploaded_photo_id, path_to_picture,
-                path_to_downloaded_picture), "Post wasn't created"
+            assert my_page.post_form.is_post_displayed(post_id, owner_id, random_string), "Post wasn't created"
+            assert is_photo_uploaded(uploaded_photo_id, path_to_picture,
+                                     path_to_downloaded_picture), "Photo wasn't uploaded to post"
